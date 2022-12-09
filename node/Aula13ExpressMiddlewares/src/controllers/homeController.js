@@ -3,6 +3,6 @@ exports.paginaInicial = (req, res) => {
 }
 
 exports.formReturn = (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
   res.send(req.body);
 }
