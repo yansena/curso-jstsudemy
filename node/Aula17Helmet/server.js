@@ -4,7 +4,7 @@ require('dotenv').config();
 const app = express();
 const path = require('path');
 const routes = require('./routes');
-const { MiddlewareGlobal } = require('./src/middlewares/middleware');;
+const { MiddlewareGlobal, checkCsrfError, csrfMiddleware } = require('./src/middlewares/middleware');;
 
 
 // const conectionString = 'mongodb+srv://yansena:XnSVmCy9bKsam3TI@cluster0.xgpysqh.mongodb.net/?retryWrites=true&w=majority'
@@ -20,10 +20,12 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const flash = require('connect-flash');
 
-
+const helmet = require('helmet');
+const csrf = require('csurf');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve(__dirname, 'public')));
+app.use(helmet());
 app.set('view engine', 'ejs');
 
 const sessionOptions = session({
@@ -42,8 +44,13 @@ const sessionOptions = session({
 app.use(sessionOptions);
 app.use(flash());
 
+app.use(csrf());
+
+
 //middlewares
 app.use(MiddlewareGlobal);
+app.use(checkCsrfError);
+app.use(csrfMiddleware);
 app.use(routes);
 
 app.set('views', path.resolve(__dirname, 'src', 'views'));

@@ -20,11 +20,13 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const flash = require('connect-flash');
 
-
+const helmet = require('helmet');
+const csrf = require('csurf');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.set('view engine', 'ejs');
+app.use(helmet());
 
 const sessionOptions = session({
   secret: 'a2b34yy23b4y34b62b45624k5624n56jk',
@@ -42,6 +44,7 @@ const sessionOptions = session({
 app.use(sessionOptions);
 app.use(flash());
 
+app.use(csrf());
 //middlewares
 app.use(MiddlewareGlobal);
 app.use(routes);
