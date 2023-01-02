@@ -14,15 +14,19 @@
           <tr>
             <th>Name</th>
             <th>Last Name</th>
-            <th>Phone</th>
             <th>Email</th>
+            <th>Phone</th>
           </tr>
-          <tr>
-            <td>Yan</td>
-            <td>Sena</td>
-            <td>996396750</td>
-            <td>contato@yandev.com.br</td>
-          </tr>
+          <% contacts.forEach(contact => { %>
+            <tr>
+              <td><%=contact.name %></td>
+              <td><%=contact.surname%></td>
+              <td><%=contact.email%></td>
+              <td><%=contact.phone%></td>
+              <td><a href="/contact/index/<%=contact._id%>">Edit</a></td>
+              <td><a class="text-danger" href="/contact/delete/<%=contact._id%>">Delete</a></td>
+            </tr>
+         <% })%>
         </table>
       </div>
     </div>
