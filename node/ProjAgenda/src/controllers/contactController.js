@@ -1,4 +1,4 @@
-const Contact = require('../models/ContactModel');
+const Contact = require('../models/ContactsModel');
 
 exports.index = (req, res) => {
   res.render('contact', {
@@ -11,7 +11,7 @@ exports.editIndex = async (req, res) => {
     return res.render('404')
   }
 
-  const contact = await Contact.findUserById(req.params.id);
+  const contact = await Contact.prototype.findUserById(req.params.id);
 
   if(!contact){
     return res.render('404')
@@ -25,7 +25,7 @@ exports.editIndex = async (req, res) => {
 exports.register = async (req, res) => {
   try {
   const contact = new Contact(req.body);
-  await contact.register();
+  await contact();
 
   if(contact.errors.length > 0){
     req.flash('errors', contact.errors);

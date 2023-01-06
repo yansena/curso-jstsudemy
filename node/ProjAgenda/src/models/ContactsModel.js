@@ -11,12 +11,14 @@ const ContactSchema = new mongoose.Schema({
 
 const ContactModel = mongoose.model('Contact', ContactSchema);
 
-function Contact(body) {
-  this.body = body;
-  this.errors = [];
-  this.contact = null;
+class Contact {
+  constructor(body) {
+    this.body = body;
+    this.errors = [];
+    this.contact = null;
+  }
 
-  Contact.prototype.register = async function () {
+  async register() {
     this.valida();
 
     if(this.errors.length > 0) {
@@ -26,7 +28,7 @@ function Contact(body) {
     this.contact = await ContactModel.create(this.body);
   }
 
-  Contact.prototype.valida = function() {
+  valida(){
     this.cleanUp();
     if(this.body.email && !validator.isEmail(this.body.email)) {
       this.errors.push('E-mail invalid');
@@ -39,7 +41,7 @@ function Contact(body) {
     }
   }
 
-  Contact.prototype.cleanUp = function(){
+  cleanUp(){
     for(const key in this.body){
       if(typeof this.body[key] !== 'string') {
         this.body[key] = '';
@@ -54,7 +56,7 @@ function Contact(body) {
     }
   }
 
-  Contact.prototype.edit = async function(id){
+  async edit(id){
     if(typeof id !== 'string') {
       return
     }
@@ -67,7 +69,7 @@ function Contact(body) {
     this.contact = await ContactModel.findByIdAndUpdate(id, this.body, { new: true });
   }
 
-  Contact.findUserById = async function(id) {
+  async findUserById(id) {
     if(typeof id !== 'string') {
       return
     }
@@ -76,8 +78,7 @@ function Contact(body) {
     return contacts;
   }
 
-  Contact.findContacts = async function() {
-    console.log('CHEGOU AQUI')
+  async findContacts() {
     const contacts = await ContactModel.find();
     return contacts;
   }
