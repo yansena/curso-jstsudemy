@@ -83,6 +83,15 @@ class Contact {
     return contacts;
   }
 
+  async delete(id) {
+    if(typeof id !== 'string') {
+      return
+    }
+
+    const contact = await ContactModel.findOneAndDelete({_id: id});
+    return contact;
+  }
+
 }
 
 module.exports = Contact;
